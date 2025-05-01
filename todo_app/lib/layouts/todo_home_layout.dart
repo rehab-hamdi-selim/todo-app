@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:todo_app/modules/archived_tasks/archived_tasks_screen.dart';
 import 'package:todo_app/modules/done_tasks/done_tasks_screen.dart';
 import 'package:todo_app/modules/new_tasks/new_tasks_screen.dart';
@@ -15,6 +16,7 @@ class _TodoHomeLayoutState extends State<TodoHomeLayout> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    createDatabase();
   }
 
   int currentIndex = 0;
@@ -52,6 +54,42 @@ class _TodoHomeLayoutState extends State<TodoHomeLayout> {
           ),
         ],
       ),
+    );
+  }
+
+  //1. create database
+  //2. create tables
+  //3. open database
+  //4. insert in database
+  //5. select from database
+  //6. update database
+  //7. delete database
+  void createDatabase() async {
+    var database = await openDatabase(
+      // the variable databaseObject maybe created before database, because database may take more time
+      'todo.db',
+      // we change the version when we change the structure of database
+      version: 1,
+      onCreate: (databaseObject, version) {
+        //Id -> auto generate and primary key
+        // Title -> String / text
+        // Date -> String / text
+        //Time -> String / text
+        //Statue -> String / text
+        databaseObject
+            .execute(
+          'CREATE TABLE Tasks (id INTEGER PRIMARY KEY, title TEXT, date TEXT, time TEXT , status TEXT)',
+        )
+            .then((value) {
+          print('Database create successfully');
+        })
+            .catchError((error) {
+          print('Error when creating database ${error.toString()}');
+        });
+      },
+      onOpen: (database) {
+        print('database opened');
+      },
     );
   }
 }
