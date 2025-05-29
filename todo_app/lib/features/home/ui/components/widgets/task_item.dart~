@@ -1,0 +1,53 @@
+import 'package:flutter/material.dart';
+
+class TaskItem extends StatelessWidget {
+  const TaskItem({super.key, required this.index});
+  final int index;
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            spacing: 20,
+            children: [
+              CircleAvatar(
+                radius: 20,
+                child: Text(index.toString(), style: TextStyle(fontSize: 20)),
+              ),
+              Expanded(
+                child: Column(
+                  spacing: 5,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Task Title',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          '12.pm',
+                          style: TextStyle(color: Colors.grey.shade600),
+                        ),
+                        const Spacer(),
+                        Text(
+                          '15-5-2025',
+                          style: TextStyle(color: Colors.grey.shade600),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

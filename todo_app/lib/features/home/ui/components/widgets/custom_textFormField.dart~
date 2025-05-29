@@ -1,0 +1,37 @@
+import 'package:flutter/material.dart';
+
+class CustomTextFormField extends StatelessWidget {
+  const CustomTextFormField({
+    super.key,
+    required this.myController,
+    required this.validator,
+    required this.label,
+    required this.preIcon,
+    this.onTap,
+  });
+  final TextEditingController myController;
+  final dynamic validator;
+  final String label;
+  final IconData preIcon;
+  final VoidCallback? onTap;
+
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: myController,
+      validator: validator,
+      onTap: onTap,
+      cursorColor: Colors.deepPurpleAccent.shade100,
+      cursorErrorColor: Colors.red,
+      decoration: InputDecoration(
+        label: Text(label),
+        prefixIcon: Icon(preIcon),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(5),
+          borderSide: const BorderSide(color: Colors.black),
+        ),
+      ),
+    );
+  }
+}
