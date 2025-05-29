@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/features/home/ui/components/widgets/task_listview.dart';
 
 class NewTasksScreen extends StatelessWidget {
   const NewTasksScreen({super.key});
@@ -6,10 +7,7 @@ class NewTasksScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Text(
-        'New Tasks Screen',
-        style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-      ),
+      child: TasksListview(),
     );
   }
 }
