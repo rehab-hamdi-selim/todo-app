@@ -1,22 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:todo_app/features/home/data/models/task_model.dart';
 import 'package:todo_app/features/home/ui/components/widgets/custom_textFormField.dart';
 
 class BottomSheetBody extends StatefulWidget {
-  const BottomSheetBody({super.key});
+  const BottomSheetBody({super.key, this.task});
 
   static GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  static dynamic selectedDate;
-  static dynamic selectedTime;
-  static String title = '';
+  final TaskModel? task;
   @override
   State<BottomSheetBody> createState() => _BottomSheetBodyState();
 }
 
 class _BottomSheetBodyState extends State<BottomSheetBody> {
+  final formKey = GlobalKey<FormState>();
   final TextEditingController titleController = TextEditingController();
-  final TextEditingController timeController = TextEditingController();
-  final TextEditingController dateController = TextEditingController();
+  DateTime? selectedDate;
+  TimeOfDay? selectedTime;
+  //
+  // final TextEditingController titleController = TextEditingController();
+  // final TextEditingController timeController = TextEditingController();
+  // final TextEditingController dateController = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (BottomSheetBody.isUpdate == true && widget.task != null) {
+      titleController.text = widget.task!.title;
+      timeController.text = widget.task!.time;
+      dateController.text = widget.task!.date;
+
+      BottomSheetBody.title = widget.task!.title;
+      BottomSheetBody.selectedDate = widget.task!.date;
+      BottomSheetBody.selectedTime = widget.task!.time;
+    }
+  }
 
   @override
   void dispose() {
@@ -36,10 +55,7 @@ class _BottomSheetBodyState extends State<BottomSheetBody> {
           mainAxisSize: MainAxisSize.min,
           spacing: 18,
           children: [
-            Text(
-              'Add New Task',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
+            Text('Add Task', style: Theme.of(context).textTheme.headlineMedium),
             SizedBox(height: 1),
             CustomTextFormField(
               myController: titleController,
@@ -68,8 +84,10 @@ class _BottomSheetBodyState extends State<BottomSheetBody> {
                   context: context,
                   initialTime: TimeOfDay.now(),
                 ).then((value) {
-                  timeController.text = value!.format(context);
-                  BottomSheetBody.selectedTime = timeController.text;
+                  if (value != null) {
+                    timeController.text = value.format(context);
+                    BottomSheetBody.selectedTime = timeController.text;
+                  }
                 });
               },
             ),
@@ -90,8 +108,10 @@ class _BottomSheetBodyState extends State<BottomSheetBody> {
                   firstDate: DateTime.now(),
                   lastDate: DateTime.now().add(const Duration(days: 365)),
                 ).then((value) {
-                  dateController.text = DateFormat.yMd().format(value!);
-                  BottomSheetBody.selectedTime = dateController.text;
+                  if (value != null) {
+                    dateController.text = DateFormat.yMMMEd().format(value);
+                    BottomSheetBody.selectedDate = dateController.text;
+                  }
                 });
               },
             ),

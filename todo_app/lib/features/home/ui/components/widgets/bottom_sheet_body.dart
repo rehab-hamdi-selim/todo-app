@@ -93,7 +93,7 @@ class _BottomSheetBodyState extends State<BottomSheetBody> {
                   lastDate: DateTime.now().add(const Duration(days: 365)),
                 ).then((value) {
                   if (value != null) {
-                    dateController.text = DateFormat.yMd().format(value);
+                    dateController.text = DateFormat.yMMMEd().format(value);
                     BottomSheetBody.selectedDate = dateController.text;
                   }
                 });
