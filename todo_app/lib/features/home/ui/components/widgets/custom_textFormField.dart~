@@ -15,7 +15,6 @@ class CustomTextFormField extends StatelessWidget {
   final IconData preIcon;
   final VoidCallback? onTap;
 
-
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -25,7 +24,7 @@ class CustomTextFormField extends StatelessWidget {
       cursorColor: Colors.deepPurpleAccent.shade100,
       cursorErrorColor: Colors.red,
       decoration: InputDecoration(
-        label: Text(label),
+        label: Text(label, style: Theme.of(context).textTheme.bodyMedium),
         prefixIcon: Icon(preIcon),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),

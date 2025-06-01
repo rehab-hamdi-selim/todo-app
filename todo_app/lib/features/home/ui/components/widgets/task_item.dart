@@ -1,42 +1,99 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/core/cubit/app_cubit.dart';
 import 'package:todo_app/features/home/data/models/task_model.dart';
+import 'package:todo_app/features/home/ui/components/widgets/custom_iconButton.dart';
 
 class TaskItem extends StatelessWidget {
-  const TaskItem({super.key, required this.index, required this.task});
+  TaskItem({
+    super.key,
+    required this.index,
+    required this.task,
+    this.done,
+    this.archived,
+  });
   final int index;
   final TaskModel task;
+  bool? done = true;
+  bool? archived = true;
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
       child: Card(
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 5),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             spacing: 20,
             children: [
-              CircleAvatar(
-                radius: 20,
-                child: Text(index.toString(), style: TextStyle(fontSize: 20)),
-              ),
               Expanded(
                 child: Column(
                   spacing: 5,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      task.title,
-                      style: Theme.of(context).textTheme.titleMedium,
+                    Row(
+                      spacing: 5,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            task.title,
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          ),
+                        ),
+                        const Spacer(),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: Colors.grey.shade300),
+                          ),
+                          child: Row(
+                            children: [
+                              done == true
+                                  ? CustomIconButton(
+                                    icon: Icons.check_box,
+                                    function: () {
+                                      AppCubit.get(context).updateTasksStatus(
+                                        id: task.id,
+                                        status: 'done',
+                                      );
+                                    },
+                                    color: Colors.green,
+                                  )
+                                  : SizedBox(),
+                              archived == true
+                                  ? CustomIconButton(
+                                    icon: Icons.archive,
+                                    function: () {
+                                      AppCubit.get(context).updateTasksStatus(
+                                        id: task.id,
+                                        status: 'archived',
+                                      );
+                                    },
+                                    color: Colors.black54,
+                                  )
+                                  : SizedBox(),
+                              CustomIconButton(
+                                icon: Icons.delete,
+                                function: () {
+                                  AppCubit.get(context).deleteTask(id: task.id);
+                                },
+                                color: Colors.red,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
+                      spacing: 15,
                       children: [
                         Text(
                           task.date,
                           style: TextStyle(color: Colors.grey.shade600),
                         ),
-                        const Spacer(),
                         Text(
                           task.time,
                           style: TextStyle(color: Colors.grey.shade600),
